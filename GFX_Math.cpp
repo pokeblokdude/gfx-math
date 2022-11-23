@@ -81,7 +81,7 @@ bool all(mat4x4 m) {
 }
 
 // arctangent of two values - uses built-in function
-float atan2(float y, float x) {
+float g_atan2(float y, float x) {
   return atan2f(y, x);
 }
 
@@ -133,8 +133,8 @@ vec4 clamp01(vec4 v) {
 }
 
 // cosine of each component
-float cos(float x) {
-  return sin(x + M_PI_2);
+float g_cos(float x) {
+  return g_sin(x + M_PI_2);
 }
 
 // cross product of two vectors
@@ -206,7 +206,7 @@ float dot(vec4 a, vec4 b) {
 }
 
 // base-e exponential - uses built-in method
-float exp(float x) {
+float g_exp(float x) {
   return fasterexp(x);
 }
 
@@ -263,10 +263,10 @@ vec4 lerp(vec4 v0, vec4 v1, float t) {
 }
 
 // log functions use built-in methods
-float log(float x) {
+float g_log(float x) {
   return fasterlog(x);
 }
-float log2(float x) {
+float g_log2(float x) {
   return fasterlog2(x);
 }
 
@@ -482,7 +482,7 @@ vec4 normalize(vec4 v) {
 }
 
 // return x^y - uses built-in method
-float pow(float x, float y) {
+float g_pow(float x, float y) {
   return fasterpow(x, y);
 }
 
@@ -538,7 +538,7 @@ float sign(float x) {
 // https://stackoverflow.com/a/66868438 
 // http://web.archive.org/web/20141220225551/http://forum.devmaster.net/t/fast-and-accurate-sine-cosine/9648
 // (fast/approximate) sine of x
-float sin(float x) {
+float g_sin(float x) {
   const float B = 4/M_PI;
   const float C = -4/(M_PI*M_PI);
 
@@ -573,7 +573,7 @@ float tan_56(float x) {
 
 // CREDIT: http://www.ganssle.com/approx.htm
 // range reduction for tangent approximation, then call tangent
-float tan(float x) {
+float g_tan(float x) {
   int octant;
 
   x = g_fmod(x, M_PI*2);

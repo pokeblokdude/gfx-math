@@ -226,15 +226,7 @@ bool all(mat3x3 m);
 bool all(mat4x4 m);
 
 // arctangent of two values
-float atan2(float y, float x);
-vec2 atan2(vec2 v1, vec2 v0);
-vec3 atan2(vec3 v1, vec3 v0);
-vec4 atan2(vec4 v1, vec4 v0);
-void atan2(mat2x2 m1, mat2x2 m0);
-void atan2(mat3x3 m1, mat3x3 m0);
-void atan2(mat4x4 m1, mat4x4 m0);
-
-// ceil
+float g_atan2(float y, float x);
 
 // clamp value between min and max
 float clamp(float x, float min, float max);
@@ -246,7 +238,7 @@ vec3 clamp01(vec3 v);
 vec4 clamp01(vec4 v);
 
 // cosine of each component
-float cos(float x);
+float g_cos(float x);
 
 // cross product of two vectors
 vec3 cross(vec3 a, vec3 b);
@@ -270,7 +262,7 @@ float dot(vec3 a, vec3 b);
 float dot(vec4 a, vec4 b);
 
 // base-e exponential
-float exp(float x);
+float g_exp(float x);
 
 // base-2 exponential
 //float exp2(float x);
@@ -292,8 +284,8 @@ vec2 lerp(vec2 v0, vec2 v1, float t);
 vec3 lerp(vec3 v0, vec3 v1, float t);
 vec4 lerp(vec4 v0, vec4 v1, float t);
 
-float log(float x);
-float log2(float x);
+float g_log(float x);
+float g_log2(float x);
 
 // returns greater of x or y
 float g_max(float x, float y);
@@ -334,7 +326,7 @@ vec3 normalize(vec3 v);
 vec4 normalize(vec4 v);
 
 // return x^y
-float pow(float x, float y);
+float g_pow(float x, float y);
 
 // convert degrees to radians
 float g_radians(float d);
@@ -356,13 +348,13 @@ float rsqrt(float x);
 float sign(float x);
 
 // sine of x
-float sin(float x);
+float g_sin(float x);
 
 // returns hermite interpolation between 0 and 1, if x is between min and max. Otherwise clamps to 0/1
 float smoothstep(float a, float b, float x);
 
 // tangent of x
-float tan(float x);
+float g_tan(float x);
 
 float *transpose(mat2x2 m);
 float *transpose(mat3x3 m);
