@@ -1,0 +1,2 @@
+# GFX Math
+This is a simple math library that implements common graphics functions. I made it for use with Arduino microcontrollers, but I'm sure it could be mildly useful in general programming as well.

@@ -83,14 +83,10 @@ bool all(mat4x4 m) {
   }
 }
 
-// arctangent of two values
-float atan2(float y, float x);
-vec2 atan2(vec2 v1, vec2 v0);
-vec3 atan2(vec3 v1, vec3 v0);
-vec4 atan2(vec4 v1, vec4 v0);
-void atan2(mat2x2 m1, mat2x2 m0);
-void atan2(mat3x3 m1, mat3x3 m0);
-void atan2(mat4x4 m1, mat4x4 m0);
+// arctangent of two values - uses built-in function
+float atan2(float y, float x) {
+  return atan2f(y, x);
+}
 
 // clamp value between min and max
 float clamp(float x, float min, float max) {
