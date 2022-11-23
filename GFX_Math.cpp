@@ -1,31 +1,28 @@
-#include <math.h>
 #include "GFX_Math.h"
+#include "fastapprox.h"
 
 // absolute value of each component of x
-float abs(float x) {
+float g_abs(float x) {
   return x < 0 ? -x : x;
 }
-vec2 abs(vec2 v) {
-  float x = abs(v.x);
-  float y = abs(v.y);
+vec2 g_abs(vec2 v) {
+  float x = g_abs(v.x);
+  float y = g_abs(v.y);
   return vec2{x, y};
 }
-vec3 abs(vec3 v) {
-  float x = abs(v.x);
-  float y = abs(v.y);
-  float z = abs(v.z);
+vec3 g_abs(vec3 v) {
+  float x = g_abs(v.x);
+  float y = g_abs(v.y);
+  float z = g_abs(v.z);
   return vec3{x, y, z};
 }
-vec4 abs(vec4 v) {
-  float x = abs(v.x);
-  float y = abs(v.y);
-  float z = abs(v.z);
-  float w = abs(v.w);
+vec4 g_abs(vec4 v) {
+  float x = g_abs(v.x);
+  float y = g_abs(v.y);
+  float z = g_abs(v.z);
+  float w = g_abs(v.w);
   return vec4{x, y, z, w};
 }
-//float* abs(mat2x2 m);
-//float* abs(mat3x3 m);
-//float* abs(mat4x4 m);
 
 // returns true if all components are non-zero
 bool all(float x) {
@@ -150,8 +147,8 @@ vec3 cross(vec3 a, vec3 b) {
 }
 
 // convert from radians to degrees
-float degrees(float r) {
-  return r * (180 / M_PI);
+float g_degrees(float r) {
+  return r * M_RAD_TO_DEG;
 }
 
 // CREDIT: https://developer.download.nvidia.com/cg/determinant.html
@@ -210,17 +207,18 @@ float dot(vec4 a, vec4 b) {
 
 // base-e exponential - uses built-in method
 float exp(float x) {
-  return expf(x);
+  return fasterexp(x);
 }
 
 // base-2 exponential - uses built-in method
-float exp2(float x) {
-  return exp2f(x);
-}
+//float exp2(float x) {
+//  return exp2f(x);
+//}
 
 // floating-point remainder of x/y - uses built-in method
-float fmod(float x, float y) {
-  return fmodf(x, y);
+float g_fmod(float a, float b) {
+  float c = frac(g_abs(a/b))*g_abs(b);
+  return (a < 0) ? -c : c;   /* if ( a < 0 ) c = 0-c */
 }
 
 // CREDIT: https://developer.download.nvidia.com/cg/frac.html
@@ -266,22 +264,19 @@ vec4 lerp(vec4 v0, vec4 v1, float t) {
 
 // log functions use built-in methods
 float log(float x) {
-  return logf(x);
-}
-float log10(float x) {
-  return log10f(x);
+  return fasterlog(x);
 }
 float log2(float x) {
-  return log2f(x);
+  return fasterlog2(x);
 }
 
 // returns greater of x or y
-float max(float x, float y) {
+float g_max(float x, float y) {
   return x >= y ? x : y;
 }
 
 // returns lesser of x or y
-float min(float x, float y) {
+float g_min(float x, float y) {
   return x <= y ? x : y;
 }
 
@@ -488,12 +483,12 @@ vec4 normalize(vec4 v) {
 
 // return x^y - uses built-in method
 float pow(float x, float y) {
-  return powf(x, y);
+  return fasterpow(x, y);
 }
 
 // convert degrees to radians
-float radians(float d) {
-  return d * (M_PI / 180);
+float g_radians(float d) {
+  return d * M_DEG_TO_RAD;
 }
 
 // CREDTI: https://developer.download.nvidia.com/cg/reflect.html
@@ -513,19 +508,19 @@ vec4 reflect(vec4 i, vec4 n) {
 vec2 refract(vec2 r, vec2 n, float IR) {
   float cosi = dot(-r, n);
   float cost2 = 1.0f - IR * IR * (1.0f - cosi*cosi);
-  vec2 t = IR*r + ((IR*cosi - sqrtf(abs(cost2))) * n);
+  vec2 t = IR*r + ((IR*cosi - sqrtf(g_abs(cost2))) * n);
   return t * vec2{(cost2 > 0 ? 1.0f : 0), (cost2 > 0 ? 1.0f : 0)};
 }
 vec3 refract(vec3 r, vec3 n, float IR) {
   float cosi = dot(-r, n);
   float cost2 = 1.0f - IR * IR * (1.0f - cosi*cosi);
-  vec3 t = IR*r + ((IR*cosi - sqrtf(abs(cost2))) * n);
+  vec3 t = IR*r + ((IR*cosi - sqrtf(g_abs(cost2))) * n);
   return t * vec3{(cost2 > 0 ? 1.0f : 0), (cost2 > 0 ? 1.0f : 0), (cost2 > 0 ? 1.0f : 0)};
 }
 vec4 refract(vec4 r, vec4 n, float IR) {
   float cosi = dot(-r, n);
   float cost2 = 1.0f - IR * IR * (1.0f - cosi*cosi);
-  vec4 t = IR*r + ((IR*cosi - sqrtf(abs(cost2))) * n);
+  vec4 t = IR*r + ((IR*cosi - sqrtf(g_abs(cost2))) * n);
   return t * vec4{(cost2 > 0 ? 1.0f : 0), (cost2 > 0 ? 1.0f : 0), (cost2 > 0 ? 1.0f : 0), (cost2 > 0 ? 1.0f : 0)};
 }
 
@@ -547,7 +542,7 @@ float sin(float x) {
   const float B = 4/M_PI;
   const float C = -4/(M_PI*M_PI);
 
-  float y = B * x + C * x * abs(x);
+  float y = B * x + C * x * g_abs(x);
 
   #ifdef EXTRA_PRECISION
   //  const float Q = 0.775;
@@ -566,11 +561,22 @@ float smoothstep(float a, float b, float x) {
 }
 
 // CREDIT: http://www.ganssle.com/approx.htm
+// uses the tan_56 function to compute (approximate) tangent up to 5.6 digits of accuracy
+// tangent of x
+float tan_56(float x) {
+  const float c1 = -3.16783027;
+  const float c2 = 0.134516124;
+  const float c3 = -4.033321984;
+  float x2 = x*x;
+  return (x * (c1 + c2 * x2) / (c3 + x2));
+}
+
+// CREDIT: http://www.ganssle.com/approx.htm
 // range reduction for tangent approximation, then call tangent
 float tan(float x) {
   int octant;
 
-  x = fmodf(x, M_PI*2);
+  x = g_fmod(x, M_PI*2);
   octant = int(x/M_PI_4);
   switch(octant) {
     case 0: return        tan_56(x                     * M_4_OVER_PI);
@@ -582,17 +588,6 @@ float tan(float x) {
     case 6: return -1.0 / tan_56((x - M_THREE_HALF_PI) * M_4_OVER_PI);
     case 7: return       -tan_56((M_PI * 2)            * M_4_OVER_PI);
   }
-}
-
-// CREDIT: http://www.ganssle.com/approx.htm
-// uses the tan_56 function to compute (approximate) tangent up to 5.6 digits of accuracy
-// tangent of x
-float tan_56(float x) {
-  const float c1 = -3.16783027;
-  const float c2 = 0.134516124;
-  const float c3 = -4.033321984;
-  float x2 = x*x;
-  return (x * (c1 + c2 * x2) / (c3 + x2));
 }
 
 float* transpose(mat2x2 m) {

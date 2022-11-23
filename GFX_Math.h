@@ -18,6 +18,8 @@
 
 #define M_4_OVER_PI 1.27323954474
 #define M_THREE_HALF_PI 4.71238898038
+#define M_RAD_TO_DEG 57.2957795131
+#define M_DEG_TO_RAD 0.0174532925199
 
 // initial list of functions taken from HLSL docs
 // https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-intrinsic-functions
@@ -209,13 +211,10 @@ typedef float mat3x3[3][3];
 typedef float mat4x4[4][4];
 
 // absolute value of each component of x
-float abs(float x);
-vec2 abs(vec2 v);
-vec3 abs(vec3 v);
-vec4 abs(vec4 v);
-float* abs(mat2x2 m);
-float* abs(mat3x3 m);
-float* abs(mat4x4 m);
+float g_abs(float x);
+vec2 g_abs(vec2 v);
+vec3 g_abs(vec3 v);
+vec4 g_abs(vec4 v);
 
 // returns true if all components are non-zero
 bool all(float x);
@@ -253,7 +252,7 @@ float cos(float x);
 vec3 cross(vec3 a, vec3 b);
 
 // convert from radians to degrees
-float degrees(float r);
+float g_degrees(float r);
 
 // return determinant of square matrix
 float determinant(mat2x2 m);
@@ -274,10 +273,10 @@ float dot(vec4 a, vec4 b);
 float exp(float x);
 
 // base-2 exponential
-float exp2(float x);
+//float exp2(float x);
 
 // floating-point remainder of x/y
-float fmod(float x, float y);
+float g_fmod(float a, float b);
 
 // returns the fractional part of x
 float frac(float x);
@@ -294,14 +293,13 @@ vec3 lerp(vec3 v0, vec3 v1, float t);
 vec4 lerp(vec4 v0, vec4 v1, float t);
 
 float log(float x);
-float log10(float x);
 float log2(float x);
 
 // returns greater of x or y
-float max(float x, float y);
+float g_max(float x, float y);
 
 // returns lesser of x or y
-float min(float x, float y);
+float g_min(float x, float y);
 
 // multiplication of different types
 //float mul(float x, float y); // 1
@@ -339,7 +337,7 @@ vec4 normalize(vec4 v);
 float pow(float x, float y);
 
 // convert degrees to radians
-float radians(float d);
+float g_radians(float d);
 
 // reflect incident vector i across normal vector n
 vec2 reflect(vec2 i, vec2 n);
