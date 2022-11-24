@@ -53,7 +53,7 @@ bool all(vec4 v) {
   }
 }
 bool all(mat2x2 m) {
-  if(m[0][0] != 0 && m[0][1] != 0 && m[1][0] != 0 && m[1][1] != 0) {
+  if(m.m00 != 0 && m.m01 != 0 && m.m10 != 0 && m.m11 != 0) {
     return true;
   }
   else {
@@ -61,8 +61,8 @@ bool all(mat2x2 m) {
   }
 }
 bool all(mat3x3 m) {
-  if(m[0][0] != 0 && m[0][1] != 0 && m[0][2] != 0 && m[1][0] != 0 && m[1][1] != 0 && m[1][2] != 0
-    && m[2][0] != 0 && m[2][1] != 0 && m[2][2] != 0) {
+  if(m.m00 != 0 && m.m01 != 0 && m.m02 != 0 && m.m10 != 0 && m.m11 != 0 && m.m12 != 0
+    && m.m20 != 0 && m.m21 != 0 && m.m22 != 0) {
     return true;
   }
   else {
@@ -70,9 +70,9 @@ bool all(mat3x3 m) {
   }
 }
 bool all(mat4x4 m) {
-  if(m[0][0] != 0 && m[0][1] != 0 && m[0][2] != 0 && m[0][3] != 0 && m[1][0] != 0 && m[1][1] != 0
-    && m[1][2] != 0 && m[1][3] != 0 && m[2][0] != 0 && m[2][1] != 0 && m[2][2] != 0 && m[2][3] != 0
-    && m[3][0] != 0 && m[3][1] != 0 && m[3][2] != 0 && m[3][3] != 0) {
+  if(m.m00 != 0 && m.m01 != 0 && m.m02 != 0 && m.m03 != 0 && m.m10 != 0 && m.m11 != 0
+    && m.m12 != 0 && m.m13 != 0 && m.m20 != 0 && m.m21 != 0 && m.m22 != 0 && m.m23 != 0
+    && m.m30 != 0 && m.m31 != 0 && m.m32 != 0 && m.m33 != 0) {
     return true;
   }
   else {
@@ -154,27 +154,27 @@ float g_degrees(float r) {
 // CREDIT: https://developer.download.nvidia.com/cg/determinant.html
 // return determinant of square matrix
 float determinant(mat2x2 m) {
-  return m[0][0]*m[1][1] - m[0][1]*m[1][0];
+  return m.m00*m.m11 - m.m01*m.m10;
 }
 float determinant(mat3x3 m) {
   return dot(
-    vec3{m[0][0], m[0][1], m[0][2]},
-      vec3{m[1][1], m[1][2], m[1][0]} * vec3{m[2][2], m[2][0], m[2][1]}
-      - vec3{m[1][2], m[1][0], m[1][1]} * vec3{m[2][1], m[2][2], m[2][0]}
+    vec3{m.m00, m.m01, m.m02},
+      vec3{m.m11, m.m12, m.m10} * vec3{m.m22, m.m20, m.m21}
+      - vec3{m.m12, m.m10, m.m11} * vec3{m.m21, m.m22, m.m20}
   );
 }
 float determinant(mat4x4 m) {
   return dot(
-    vec4{1, -1, 1, -1} * vec4{m[0][0], m[0][1], m[0][2], m[0][3]},
-      vec4{m[1][1], m[1][2], m[1][3], m[1][0]} *
-        (vec4{m[2][2], m[2][3], m[2][0], m[2][1]} * vec4{m[3][3], m[3][0], m[3][1], m[3][2]}
-        - vec4{m[2][3], m[2][0], m[2][1], m[2][2]} * vec4{m[3][2], m[3][3], m[3][0], m[3][1]})
-      + vec4{m[1][2], m[1][3], m[1][0], m[1][1]} *
-        (vec4{m[2][3], m[2][0], m[2][1], m[2][2]} * vec4{m[3][1], m[3][2], m[3][3], m[3][0]}
-        - vec4{m[2][1], m[2][2], m[2][3], m[2][0]} * vec4{m[3][3], m[3][0], m[3][1], m[3][2]})
-      + vec4{m[1][3], m[1][0], m[1][1], m[1][2]} *
-        (vec4{m[2][1], m[2][2], m[2][3], m[2][0]} * vec4{m[3][2], m[3][3], m[3][0], m[3][1]}
-        - vec4{m[2][2], m[2][3], m[2][0], m[2][1]} * vec4{m[3][1], m[3][2], m[3][3], m[3][0]})
+    vec4{1, -1, 1, -1} * vec4{m.m00, m.m01, m.m02, m.m03},
+      vec4{m.m11, m.m12, m.m13, m.m10} *
+        (vec4{m.m22, m.m23, m.m20, m.m21} * vec4{m.m33, m.m30, m.m31, m.m32}
+        - vec4{m.m23, m.m20, m.m21, m.m22} * vec4{m.m32, m.m33, m.m30, m.m31})
+      + vec4{m.m12, m.m13, m.m10, m.m11} *
+        (vec4{m.m23, m.m20, m.m21, m.m22} * vec4{m.m31, m.m32, m.m33, m.m30}
+        - vec4{m.m21, m.m22, m.m23, m.m20} * vec4{m.m33, m.m30, m.m31, m.m32})
+      + vec4{m.m13, m.m10, m.m11, m.m12} *
+        (vec4{m.m21, m.m22, m.m23, m.m20} * vec4{m.m32, m.m33, m.m30, m.m31}
+        - vec4{m.m22, m.m23, m.m20, m.m21} * vec4{m.m31, m.m32, m.m33, m.m30})
   );
 }
 
@@ -311,161 +311,134 @@ vec4 mul(vec4 v0, vec4 v1) {
   return v0*v1;
 }
 // scale matrix by float
-float* mul(float f, mat2x2 m) {
-  static mat2x2 C = {
-    {f*m[0][0], f*m[0][1]},
-    {f*m[1][0], f*m[1][1]}
+mat2x2 mul(float f, mat2x2 m) {
+  return mat2x2 {
+    f*m.m00, f*m.m01,
+    f*m.m10, f*m.m11
   };
-
-  return *C;
 }
-float* mul(float f, mat3x3 m) {
-  static mat3x3 C = {
-    {f*m[0][0], f*m[0][1], f*m[0][2]},
-    {f*m[1][0], f*m[1][1], f*m[1][2]},
-    {f*m[2][0], f*m[2][1], f*m[2][2]}
+mat3x3 mul(float f, mat3x3 m) {
+  return mat3x3 {
+    f*m.m00, f*m.m01, f*m.m02,
+    f*m.m10, f*m.m11, f*m.m12,
+    f*m.m20, f*m.m21, f*m.m22
   };
-
-  return *C;
 }
-float* mul(float f, mat4x4 m) {
-  static mat4x4 C = {
-    {f*m[0][0], f*m[0][1], f*m[0][2], f*m[0][3]},
-    {f*m[1][0], f*m[1][1], f*m[1][2], f*m[1][3]},
-    {f*m[2][0], f*m[2][1], f*m[2][2], f*m[2][3]},
-    {f*m[3][0], f*m[3][1], f*m[3][2], f*m[3][3]}
+mat4x4 mul(float f, mat4x4 m) {
+  return mat4x4 {
+    f*m.m00, f*m.m01, f*m.m02, f*m.m03,
+    f*m.m10, f*m.m11, f*m.m12, f*m.m13,
+    f*m.m20, f*m.m21, f*m.m22, f*m.m23,
+    f*m.m30, f*m.m31, f*m.m32, f*m.m33
   };
-
-  return *C;
 }
-float* mul(mat2x2 m, float f) {
-  static mat2x2 C = {
-    {f*m[0][0], f*m[0][1]},
-    {f*m[1][0], f*m[1][1]}
+mat2x2 mul(mat2x2 m, float f) {
+  return mat2x2 {
+    f*m.m00, f*m.m01,
+    f*m.m10, f*m.m11
   };
-
-  return *C;
 }
-float* mul(mat3x3 m, float f) {
-  static mat3x3 C = {
-    {f*m[0][0], f*m[0][1], f*m[0][2]},
-    {f*m[1][0], f*m[1][1], f*m[1][2]},
-    {f*m[2][0], f*m[2][1], f*m[2][2]}
+mat3x3 mul(mat3x3 m, float f) {
+  return mat3x3 {
+    f*m.m00, f*m.m01, f*m.m02,
+    f*m.m10, f*m.m11, f*m.m12,
+    f*m.m20, f*m.m21, f*m.m22
   };
-
-  return *C;
 }
-float* mul(mat4x4 m, float f) {
-  static mat4x4 C = {
-    {f*m[0][0], f*m[0][1], f*m[0][2], f*m[0][3]},
-    {f*m[1][0], f*m[1][1], f*m[1][2], f*m[1][3]},
-    {f*m[2][0], f*m[2][1], f*m[2][2], f*m[2][3]},
-    {f*m[3][0], f*m[3][1], f*m[3][2], f*m[3][3]}
+mat4x4 mul(mat4x4 m, float f) {
+  return mat4x4 {
+    f*m.m00, f*m.m01, f*m.m02, f*m.m03,
+    f*m.m10, f*m.m11, f*m.m12, f*m.m13,
+    f*m.m20, f*m.m21, f*m.m22, f*m.m23,
+    f*m.m30, f*m.m31, f*m.m32, f*m.m33
   };
-
-  return *C;
 }
 // matrix-matrix multiplication
-float* mul(mat2x2 A, mat2x2 B) {
-  static mat2x2 C = {
-    {A[0][0]*B[0][0] + A[0][1]*B[1][0], A[0][0]*B[0][1] + A[0][1]*B[1][1]},
-    {A[1][0]*B[0][0] + A[1][1]*B[1][0], A[1][0]*B[0][1] + A[1][1]*B[1][1]}
+mat2x2 mul(mat2x2 A, mat2x2 B) {
+  return mat2x2 {
+    A.m00*B.m00 + A.m01*B.m10, A.m00*B.m01 + A.m01*B.m11,   // 00, 01
+    A.m10*B.m00 + A.m11*B.m10, A.m10*B.m01 + A.m11*B.m11    // 10, 11
   };
-
-  return *C;
 }
-float* mul(mat3x3 A, mat3x3 B) {
-  static mat3x3 C = {
-    {
-      A[0][0]*B[0][0] + A[0][1]*B[1][0] + A[0][2]*B[2][0], 
-      A[0][0]*B[0][1] + A[0][1]*B[1][1] + A[0][2]*B[2][1], 
-      A[0][0]*B[0][2] + A[0][1]*B[1][2] + A[0][2]*B[2][2]
-    },
-    {
-      A[1][0]*B[0][0] + A[1][1]*B[1][0] + A[1][2]*B[2][0], 
-      A[1][0]*B[0][1] + A[1][1]*B[1][1] + A[1][2]*B[2][1],
-      A[1][0]*B[0][2] + A[1][1]*B[1][2] + A[1][2]*B[2][2]
-    },
-    {
-      A[2][0]*B[0][0] + A[2][1]*B[1][0] + A[2][2]*B[2][0], 
-      A[2][0]*B[0][1] + A[2][1]*B[1][1] + A[2][2]*B[2][1],
-      A[2][0]*B[0][2] + A[2][1]*B[1][2] + A[2][2]*B[2][2]
-    }
-  };
+mat3x3 mul(mat3x3 A, mat3x3 B) {
+  return mat3x3 {
+    A.m00*B.m00 + A.m01*B.m10 + A.m02*B.m20,          // 00
+    A.m00*B.m01 + A.m01*B.m11 + A.m02*B.m21,          // 01
+    A.m00*B.m02 + A.m01*B.m12 + A.m02*B.m22,          // 02
+  
+    A.m10*B.m00 + A.m11*B.m10 + A.m12*B.m20,          // 10
+    A.m10*B.m01 + A.m11*B.m11 + A.m12*B.m21,          // 11
+    A.m10*B.m02 + A.m11*B.m12 + A.m12*B.m22,          // 12
 
-  return *C;
+    A.m20*B.m00 + A.m21*B.m10 + A.m22*B.m20,          // 20
+    A.m20*B.m01 + A.m21*B.m11 + A.m22*B.m21,          // 21
+    A.m20*B.m02 + A.m21*B.m12 + A.m22*B.m22           // 22
+  };
 }
-float* mul(mat4x4 A, mat4x4 B) {
-  static mat4x4 C = {
-    {
-      A[0][0]*B[0][0] + A[0][1]*B[1][0] + A[0][2]*B[2][0] + A[0][3]*B[3][0], 
-      A[0][0]*B[0][1] + A[0][1]*B[1][1] + A[0][2]*B[2][1] + A[0][3]*B[3][1], 
-      A[0][0]*B[0][2] + A[0][1]*B[1][2] + A[0][2]*B[2][2] + A[0][3]*B[3][2],
-      A[0][0]*B[0][3] + A[0][1]*B[1][3] + A[0][2]*B[2][3] + A[0][3]*B[3][3]
-    },
-    {
-      A[1][0]*B[0][0] + A[1][1]*B[1][0] + A[1][2]*B[2][0] + A[1][3]*B[3][0], 
-      A[1][0]*B[0][1] + A[1][1]*B[1][1] + A[1][2]*B[2][1] + A[1][3]*B[3][1],
-      A[1][0]*B[0][2] + A[1][1]*B[1][2] + A[1][2]*B[2][2] + A[1][3]*B[3][2],
-      A[1][0]*B[0][3] + A[1][1]*B[1][3] + A[1][2]*B[2][3] + A[1][3]*B[3][3]
-    },
-    {
-      A[2][0]*B[0][0] + A[2][1]*B[1][0] + A[2][2]*B[2][0] + A[2][3]*B[3][0], 
-      A[2][0]*B[0][1] + A[2][1]*B[1][1] + A[2][2]*B[2][1] + A[2][3]*B[3][1],
-      A[2][0]*B[0][2] + A[2][1]*B[1][2] + A[2][2]*B[2][2] + A[2][3]*B[3][2],
-      A[2][0]*B[0][3] + A[2][1]*B[1][3] + A[2][2]*B[2][3] + A[2][3]*B[3][3]
-    },
-    {
-      A[3][0]*B[0][0] + A[3][1]*B[1][0] + A[3][2]*B[2][0] + A[3][3]*B[3][0], 
-      A[3][0]*B[0][1] + A[3][1]*B[1][1] + A[3][2]*B[2][1] + A[3][3]*B[3][1],
-      A[3][0]*B[0][2] + A[3][1]*B[1][2] + A[3][2]*B[2][2] + A[3][3]*B[3][2],
-      A[3][0]*B[0][3] + A[3][1]*B[1][3] + A[3][2]*B[2][3] + A[3][3]*B[3][3]
-    }
+mat4x4 mul(mat4x4 A, mat4x4 B) {
+  return mat4x4 {
+    A.m00*B.m00 + A.m01*B.m10 + A.m02*B.m20 + A.m03*B.m30,  // 00
+    A.m00*B.m01 + A.m01*B.m11 + A.m02*B.m21 + A.m03*B.m31,  // 01
+    A.m00*B.m02 + A.m01*B.m12 + A.m02*B.m22 + A.m03*B.m32,  // 02
+    A.m00*B.m03 + A.m01*B.m13 + A.m02*B.m23 + A.m03*B.m33,  // 03
+    
+    A.m10*B.m00 + A.m11*B.m10 + A.m12*B.m20 + A.m13*B.m30,  // 10
+    A.m10*B.m01 + A.m11*B.m11 + A.m12*B.m21 + A.m13*B.m31,  // 11
+    A.m10*B.m02 + A.m11*B.m12 + A.m12*B.m22 + A.m13*B.m32,  // 12
+    A.m10*B.m03 + A.m11*B.m13 + A.m12*B.m23 + A.m13*B.m33,  // 13
+    
+    A.m20*B.m00 + A.m21*B.m10 + A.m22*B.m20 + A.m23*B.m30,  // 20
+    A.m20*B.m01 + A.m21*B.m11 + A.m22*B.m21 + A.m23*B.m31,  // 21
+    A.m20*B.m02 + A.m21*B.m12 + A.m22*B.m22 + A.m23*B.m32,  // 22
+    A.m20*B.m03 + A.m21*B.m13 + A.m22*B.m23 + A.m23*B.m33,  // 23
+    
+    A.m30*B.m00 + A.m31*B.m10 + A.m32*B.m20 + A.m33*B.m30,  // 30
+    A.m30*B.m01 + A.m31*B.m11 + A.m32*B.m21 + A.m33*B.m31,  // 31
+    A.m30*B.m02 + A.m31*B.m12 + A.m32*B.m22 + A.m33*B.m32,  // 32
+    A.m30*B.m03 + A.m31*B.m13 + A.m32*B.m23 + A.m33*B.m33   // 33
   };
-
-  return *C;
 }
 // matrix-vector multiplication (linear mapping)
 vec2 mul(vec2 v, mat2x2 m) {
   vec2 y;
-  y.x = m[0][0]*v.x + m[0][1]*v.y;
-  y.y = m[1][0]*v.x + m[1][1]*v.y;
+  y.x = m.m00*v.x + m.m01*v.y;
+  y.y = m.m10*v.x + m.m11*v.y;
   return y;
 }
 vec3 mul(vec3 v, mat3x3 m) {
   vec3 y;
-  y.x = m[0][0]*v.x + m[0][1]*v.y + m[0][2]*v.z;
-  y.y = m[1][0]*v.x + m[1][1]*v.y + m[1][2]*v.z;
-  y.z = m[2][0]*v.x + m[2][1]*v.y + m[2][2]*v.z;
+  y.x = m.m00*v.x + m.m01*v.y + m.m02*v.z;
+  y.y = m.m10*v.x + m.m11*v.y + m.m12*v.z;
+  y.z = m.m20*v.x + m.m21*v.y + m.m22*v.z;
   return y;
 }
 vec4 mul(vec4 v, mat4x4 m) {
   vec4 y;
-  y.x = m[0][0]*v.x + m[0][1]*v.y + m[0][2]*v.z + m[0][3]*v.w;
-  y.y = m[1][0]*v.x + m[1][1]*v.y + m[1][2]*v.z + m[1][3]*v.w;
-  y.z = m[2][0]*v.x + m[2][1]*v.y + m[2][2]*v.z + m[2][3]*v.w;
-  y.w = m[3][0]*v.x + m[3][1]*v.y + m[3][2]*v.z + m[3][3]*v.w;
+  y.x = m.m00*v.x + m.m01*v.y + m.m02*v.z + m.m03*v.w;
+  y.y = m.m10*v.x + m.m11*v.y + m.m12*v.z + m.m13*v.w;
+  y.z = m.m20*v.x + m.m21*v.y + m.m22*v.z + m.m23*v.w;
+  y.w = m.m30*v.x + m.m31*v.y + m.m32*v.z + m.m33*v.w;
   return y;
 }
 vec2 mul(mat2x2 m, vec2 v) {
   vec2 y;
-  y.x = m[0][0]*v.x + m[0][1]*v.y;
-  y.y = m[1][0]*v.x + m[1][1]*v.y;
+  y.x = m.m00*v.x + m.m01*v.y;
+  y.y = m.m10*v.x + m.m11*v.y;
   return y;
 }
 vec3 mul(mat3x3 m, vec3 v) {
   vec3 y;
-  y.x = m[0][0]*v.x + m[0][1]*v.y + m[0][2]*v.z;
-  y.y = m[1][0]*v.x + m[1][1]*v.y + m[1][2]*v.z;
-  y.z = m[2][0]*v.x + m[2][1]*v.y + m[2][2]*v.z;
+  y.x = m.m00*v.x + m.m01*v.y + m.m02*v.z;
+  y.y = m.m10*v.x + m.m11*v.y + m.m12*v.z;
+  y.z = m.m20*v.x + m.m21*v.y + m.m22*v.z;
   return y;
 }
 vec4 mul(mat4x4 m, vec4 v) {
   vec4 y;
-  y.x = m[0][0]*v.x + m[0][1]*v.y + m[0][2]*v.z + m[0][3]*v.w;
-  y.y = m[1][0]*v.x + m[1][1]*v.y + m[1][2]*v.z + m[1][3]*v.w;
-  y.z = m[2][0]*v.x + m[2][1]*v.y + m[2][2]*v.z + m[2][3]*v.w;
-  y.w = m[3][0]*v.x + m[3][1]*v.y + m[3][2]*v.z + m[3][3]*v.w;
+  y.x = m.m00*v.x + m.m01*v.y + m.m02*v.z + m.m03*v.w;
+  y.y = m.m10*v.x + m.m11*v.y + m.m12*v.z + m.m13*v.w;
+  y.z = m.m20*v.x + m.m21*v.y + m.m22*v.z + m.m23*v.w;
+  y.w = m.m30*v.x + m.m31*v.y + m.m32*v.z + m.m33*v.w;
   return y;
 }
 
@@ -590,50 +563,50 @@ float g_tan(float x) {
   }
 }
 
-float* transpose(mat2x2 m) {
-  static mat2x2 C;
+mat2x2 transpose(mat2x2 m) {
+  mat2x2 C;
 
-  C[0][0] = m[0][0];
-  C[0][1] = m[1][0];
-  C[1][0] = m[0][1];
-  C[1][1] = m[1][1];
+  C.m00 = m.m00;
+  C.m01 = m.m10;
+  C.m10 = m.m01;
+  C.m11 = m.m11;
   
-  return *C;
+  return C;
 }
-float* transpose(mat3x3 m) {
-  static mat3x3 C;
+mat3x3 transpose(mat3x3 m) {
+  mat3x3 C;
 
-  C[0][0] = m[0][0];
-  C[0][1] = m[1][0];
-  C[0][2] = m[2][0];
-  C[1][0] = m[0][1];
-  C[1][1] = m[1][1];
-  C[1][2] = m[2][1];
-  C[2][0] = m[0][2];
-  C[2][1] = m[1][2];
-  C[2][2] = m[2][2];
+  C.m00 = m.m00;
+  C.m01 = m.m10;
+  C.m02 = m.m20;
+  C.m10 = m.m01;
+  C.m11 = m.m11;
+  C.m12 = m.m21;
+  C.m20 = m.m02;
+  C.m21 = m.m12;
+  C.m22 = m.m22;
 
-  return *C;
+  return C;
 }
-float* transpose(mat4x4 m) {
-  static mat4x4 C;
+mat4x4 transpose(mat4x4 m) {
+  mat4x4 C;
 
-  C[0][0] = m[0][0];
-  C[0][1] = m[1][0];
-  C[0][2] = m[2][0];
-  C[0][3] = m[3][0];
-  C[1][0] = m[0][1];
-  C[1][1] = m[1][1];
-  C[1][2] = m[2][1];
-  C[1][3] = m[3][1];
-  C[2][0] = m[0][2];
-  C[2][1] = m[1][2];
-  C[2][2] = m[2][2];
-  C[2][3] = m[3][2];
-  C[3][0] = m[0][3];
-  C[3][1] = m[1][3];
-  C[3][2] = m[2][3];
-  C[3][3] = m[3][3];
+  C.m00 = m.m00;
+  C.m01 = m.m10;
+  C.m02 = m.m20;
+  C.m03 = m.m30;
+  C.m10 = m.m01;
+  C.m11 = m.m11;
+  C.m12 = m.m21;
+  C.m13 = m.m31;
+  C.m20 = m.m02;
+  C.m21 = m.m12;
+  C.m22 = m.m22;
+  C.m23 = m.m32;
+  C.m30 = m.m03;
+  C.m31 = m.m13;
+  C.m32 = m.m23;
+  C.m33 = m.m33;
 
-  return *C;
+  return C;
 }

@@ -206,10 +206,21 @@ struct vec4 {
   }
 };
 
-// TODO: refactor matrices to have *columns* be sequential in memory
-typedef float mat2x2[2][2];
-typedef float mat3x3[3][3];
-typedef float mat4x4[4][4];
+struct mat2x2 {
+  float m00, m01;
+  float m10, m11;
+};
+struct mat3x3 {
+  float m00, m01, m02;
+  float m10, m11, m12;
+  float m20, m21, m22;
+};
+struct mat4x4 {
+  float m00, m01, m02, m03;
+  float m10, m11, m12, m13;
+  float m20, m21, m22, m23;
+  float m30, m31, m32, m33;
+};
 
 struct Transform {
   vec4 position = {0, 0, 0, 1};
@@ -313,15 +324,15 @@ vec4 mul(vec4 v, float f);
 vec2 mul(vec2 v0, vec2 v1); // 4
 vec3 mul(vec3 v0, vec3 v1);
 vec4 mul(vec4 v0, vec4 v1);
-float* mul(float f, mat2x2 m); // 5
-float* mul(float f, mat3x3 m);
-float* mul(float f, mat4x4 m);
-float* mul(mat2x2 m, float f); // 6
-float* mul(mat3x3 m, float f);
-float* mul(mat4x4 m, float f);
-float* mul(mat2x2 A, mat2x2 B); // 7
-float* mul(mat3x3 A, mat3x3 B);
-float* mul(mat4x4 A, mat4x4 B);
+mat2x2 mul(float f, mat2x2 m); // 5
+mat3x3 mul(float f, mat3x3 m);
+mat4x4 mul(float f, mat4x4 m);
+mat2x2 mul(mat2x2 m, float f); // 6
+mat3x3 mul(mat3x3 m, float f);
+mat4x4 mul(mat4x4 m, float f);
+mat2x2 mul(mat2x2 A, mat2x2 B); // 7
+mat3x3 mul(mat3x3 A, mat3x3 B);
+mat4x4 mul(mat4x4 A, mat4x4 B);
 vec2 mul(vec2 v, mat2x2 m); // 8
 vec3 mul(vec3 v, mat3x3 m);
 vec4 mul(vec4 v, mat4x4 m);
@@ -365,8 +376,8 @@ float smoothstep(float a, float b, float x);
 // tangent of x
 float g_tan(float x);
 
-float *transpose(mat2x2 m);
-float *transpose(mat3x3 m);
-float *transpose(mat4x4 m);
+mat2x2 transpose(mat2x2 m);
+mat3x3 transpose(mat3x3 m);
+mat4x4 transpose(mat4x4 m);
 
 #endif // _GFX_MATH_H
