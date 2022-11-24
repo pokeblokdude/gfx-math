@@ -206,9 +206,18 @@ struct vec4 {
   }
 };
 
+// TODO: refactor matrices to have *columns* be sequential in memory
 typedef float mat2x2[2][2];
 typedef float mat3x3[3][3];
 typedef float mat4x4[4][4];
+
+struct Transform {
+  vec4 position = {0, 0, 0, 1};
+  vec4 scale = {1, 1, 1, 1};
+  vec4 rotation = {0, 0, 0, 1};
+};
+
+// =============== below this is all math functions ==========================
 
 // absolute value of each component of x
 float g_abs(float x);
