@@ -59,17 +59,17 @@ Vector with 4 ints, `x`, `y`, `z`, `w`
 ## Functions
 Some functions have a `g_` prefix because they were conflicting with the built-in math library.
 
-**g_abs(x)**
+**g_abs(x)**  
 returns the component-wise absolute value of x   
 `x`: float, vec2, vec3, vec4  
 `return`:  same type as `x`
 
-**all(x)** 
+**all(x)**  
 returns true if all components of x are non-zero  
 `x`: float, vec2, vec3, vec4, mat2x2, mat3x3, mat4x4  
 `return`:  bool
 
-**g_atan2(y, x)** 
+**g_atan2(y, x)**  
 to be honest I still don't really understand what this does  
 `y`: float  
 `x`: float  
