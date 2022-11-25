@@ -402,12 +402,6 @@ struct mat4x4 {
   float m30, m31, m32, m33;
 };
 
-struct Transform {
-  vec4 position = {0, 0, 0, 1};
-  vec4 scale = {1, 1, 1, 1};
-  vec4 rotation = {0, 0, 0, 1};
-};
-
 // =============== below this is all math functions ==========================
 
 // absolute value of each component of x
