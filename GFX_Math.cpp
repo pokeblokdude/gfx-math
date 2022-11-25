@@ -227,6 +227,11 @@ float frac(float x) {
   return x - floorf(x);
 }
 
+//CREDIT: https://www.ronja-tutorials.com/post/047-invlerp_remap/#inverse-lerp
+float invLerp(float a, float b, float value) {
+  return (value - a) / (b - a);
+}
+
 // return length of vector
 float length(vec2 v) {
   sqrtf((v.x*v.x)+(v.y*v.y));

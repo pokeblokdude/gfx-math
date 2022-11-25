@@ -83,6 +83,64 @@ struct vec2 {
     return v;
   }
 };
+struct vec2i {
+  int x;
+  int y;
+
+  // override addition
+  vec2i& operator+=(const vec2i& rhs) {
+    this->x += rhs.x;
+    this->y += rhs.y;
+    return *this;
+  }
+  friend vec2i operator+(vec2i lhs, const vec2i& rhs) {
+    lhs += rhs;
+    return lhs;
+  }
+  // override subtraction
+  vec2i& operator-=(const vec2i& rhs) {
+    this->x -= rhs.x;
+    this->y -= rhs.y;
+    return *this;
+  }
+  friend vec2i operator-(vec2i lhs, const vec2i& rhs) {
+    lhs -= rhs;
+    return lhs;
+  }
+  // override v/v multiplication
+  vec2i& operator*=(const vec2i& rhs) {
+    this->x *= rhs.x;
+    this->y *= rhs.y;
+    return *this;
+  }
+  friend vec2i operator*(vec2i lhs, const vec2i& rhs) {
+    lhs *= rhs;
+    return lhs;
+  }
+  // override v/f multiplication
+  vec2i& operator*=(const float& rhs) {
+    this->x *= rhs;
+    this->y *= rhs;
+    return *this;
+  }
+  friend vec2i operator*(vec2i lhs, const int& rhs) {
+    lhs *= rhs;
+    return lhs;
+  }
+  // f/v mult
+  friend vec2i operator*(const int& lhs, vec2i rhs) {
+    rhs *= lhs;
+    rhs *= lhs;
+    return rhs;
+  }
+  // override negation
+  vec2i& operator-() const {
+    vec2i v;
+    v.x = -this->x;
+    v.y = -this->y;
+    return v;
+  }
+};
 struct vec3 {
   float x;
   float y;
@@ -138,6 +196,128 @@ struct vec3 {
     v.x = -this->x;
     v.y = -this->y;
     v.z = -this->z;
+    return v;
+  }
+};
+struct vec3i {
+  int x;
+  int y;
+  int z;
+
+  vec3i& operator+=(const vec3i& rhs) {
+    this->x += rhs.x;
+    this->y += rhs.y;
+    this->z += rhs.z;
+    return *this;
+  }
+  friend vec3i operator+(vec3i lhs, const vec3i& rhs) {
+    lhs += rhs;
+    return lhs;
+  }
+  vec3i& operator-=(const vec3i& rhs) {
+    this->x -= rhs.x;
+    this->y -= rhs.y;
+    this->z -= rhs.z;
+    return *this;
+  }
+  friend vec3i operator-(vec3i lhs, const vec3i& rhs) {
+    lhs -= rhs;
+    return lhs;
+  }
+  vec3i& operator*=(const vec3i& rhs) {
+    this->x *= rhs.x;
+    this->y *= rhs.y;
+    this->z *= rhs.z;
+    return *this;
+  }
+  friend vec3i operator*(vec3i lhs, const vec3i& rhs) {
+    lhs *= rhs;
+    return lhs;
+  }
+  vec3i& operator*=(const int& rhs) {
+    this->x *= rhs;
+    this->y *= rhs;
+    this->z *= rhs;
+    return *this;
+  }
+  friend vec3i operator*(vec3i lhs, const int& rhs) {
+    lhs *= rhs;
+    return lhs;
+  }
+  friend vec3i operator*(const int& lhs, vec3i rhs) {
+    rhs *= lhs;
+    rhs *= lhs;
+    return rhs;
+  }
+  vec3i& operator-() const {
+    vec3i v;
+    v.x = -this->x;
+    v.y = -this->y;
+    v.z = -this->z;
+    return v;
+  }
+};
+struct vec4i {
+  int x;
+  int y;
+  int z;
+  int w;
+
+  vec4i& operator+=(const vec4i& rhs) {
+    this->x += rhs.x;
+    this->y += rhs.y;
+    this->z += rhs.z;
+    this->w += rhs.w;
+    return *this;
+  }
+  friend vec4i operator+(vec4i lhs, const vec4i& rhs) {
+    lhs += rhs;
+    return lhs;
+  }
+  vec4i& operator-=(const vec4i& rhs) {
+    this->x -= rhs.x;
+    this->y -= rhs.y;
+    this->z -= rhs.z;
+    this->w -= rhs.w;
+    return *this;
+  }
+  friend vec4i operator-(vec4i lhs, const vec4i& rhs) {
+    lhs -= rhs;
+    return lhs;
+  }
+  vec4i& operator*=(const vec4i& rhs) {
+    this->x *= rhs.x;
+    this->y *= rhs.y;
+    this->z *= rhs.z;
+    this->w *= rhs.w;
+    return *this;
+  }
+  friend vec4i operator*(vec4i lhs, const vec4i& rhs) {
+    lhs *= rhs;
+    return lhs;
+  }
+  vec4i& operator*=(const int& rhs) {
+    this->x *= rhs;
+    this->y *= rhs;
+    this->z *= rhs;
+    this->w *= rhs;
+    return *this;
+  }
+  friend vec4i operator*(vec4i lhs, const int& rhs) {
+    lhs *= rhs;
+    return lhs;
+  }
+  friend vec4i operator*(const int& lhs, vec4i rhs) {
+    rhs *= lhs;
+    rhs *= lhs;
+    return rhs;
+  }
+  vec4i& operator-() const {
+    vec4i v;
+    v.x = -this->x;
+    v.y = -this->y;
+    v.z = -this->z;
+    v.w = -this->w;
     return v;
   }
 };
@@ -292,6 +472,8 @@ float g_fmod(float a, float b);
 
 // returns the fractional part of x
 float frac(float x);
+
+float invLerp(float a, float b, float value);
 
 // return length of vector
 float length(vec2 v);
