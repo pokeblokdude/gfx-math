@@ -227,6 +227,79 @@ float frac(float x) {
   return x - floorf(x);
 }
 
+// CREDIT: https://developer.download.nvidia.com/cg/inverse.html
+// returns the matrix inverse of A
+mat2x2 inverse(mat2x2 A) {
+  mat2x2 C;
+
+  float det = determinant(A);
+  C.m00 = A.m11 / det;
+  C.m01 = -A.m01 / det;
+  C.m10 = -A.m10 / det;
+  C.m11 = A.m00 / det;
+
+  return C;
+}
+mat3x3 inverse(mat3x3 A) {
+  mat3x3 C;
+
+  float det = determinant(A);
+  C.m00 = (A.m11*A.m22 - A.m12*A.m21) / det;  // A
+  C.m01 = -(A.m01*A.m22 - A.m02*A.m21) / det; // D
+  C.m02 = (A.m01*A.m12 - A.m02*A.m11) / det;  // G
+  C.m10 = -(A.m10*A.m22 - A.m12*A.m20) / det; // B
+  C.m11 = (A.m00*A.m22 - A.m02*A.m20) / det;  // E
+  C.m12 = -(A.m00*A.m12 - A.m02*A.m10) / det; // H
+  C.m20 = (A.m10*A.m21 - A.m11*A.m20) / det;  // C
+  C.m21 = -(A.m00*A.m21 - A.m01*A.m20) / det; // F
+  C.m22 = (A.m00*A.m11 - A.m01*A.m10) / det;  // I
+
+  return C;
+}
+// CREDIT: https://stackoverflow.com/a/44446912
+mat4x4 inverse(mat4x4 A) {
+  float A2323 = A.m22 * A.m33 - A.m23 * A.m32 ;
+  float A1323 = A.m21 * A.m33 - A.m23 * A.m31 ;
+  float A1223 = A.m21 * A.m32 - A.m22 * A.m31 ;
+  float A0323 = A.m20 * A.m33 - A.m23 * A.m30 ;
+  float A0223 = A.m20 * A.m32 - A.m22 * A.m30 ;
+  float A0123 = A.m20 * A.m31 - A.m21 * A.m30 ;
+  float A2313 = A.m12 * A.m33 - A.m13 * A.m32 ;
+  float A1313 = A.m11 * A.m33 - A.m13 * A.m31 ;
+  float A1213 = A.m11 * A.m32 - A.m12 * A.m31 ;
+  float A2312 = A.m12 * A.m23 - A.m13 * A.m22 ;
+  float A1312 = A.m11 * A.m23 - A.m13 * A.m21 ;
+  float A1212 = A.m11 * A.m22 - A.m12 * A.m21 ;
+  float A0313 = A.m10 * A.m33 - A.m13 * A.m30 ;
+  float A0213 = A.m10 * A.m32 - A.m12 * A.m30 ;
+  float A0312 = A.m10 * A.m23 - A.m13 * A.m20 ;
+  float A0212 = A.m10 * A.m22 - A.m12 * A.m20 ;
+  float A0113 = A.m10 * A.m31 - A.m11 * A.m30 ;
+  float A0112 = A.m10 * A.m21 - A.m11 * A.m20 ;
+
+  float det = determinant(A);
+  det = 1 / det;
+
+  return mat4x4 {
+     det *  (A.m11 * A2323 - A.m12 * A1323 + A.m13 * A1223),
+     det * -(A.m01 * A2323 - A.m02 * A1323 + A.m03 * A1223),
+     det *  (A.m01 * A2313 - A.m02 * A1313 + A.m03 * A1213),
+     det * -(A.m01 * A2312 - A.m02 * A1312 + A.m03 * A1212),
+     det * -(A.m10 * A2323 - A.m12 * A0323 + A.m13 * A0223),
+     det *  (A.m00 * A2323 - A.m02 * A0323 + A.m03 * A0223),
+     det * -(A.m00 * A2313 - A.m02 * A0313 + A.m03 * A0213),
+     det *  (A.m00 * A2312 - A.m02 * A0312 + A.m03 * A0212),
+     det *  (A.m10 * A1323 - A.m11 * A0323 + A.m13 * A0123),
+     det * -(A.m00 * A1323 - A.m01 * A0323 + A.m03 * A0123),
+     det *  (A.m00 * A1313 - A.m01 * A0313 + A.m03 * A0113),
+     det * -(A.m00 * A1312 - A.m01 * A0312 + A.m03 * A0112),
+     det * -(A.m10 * A1223 - A.m11 * A0223 + A.m12 * A0123),
+     det *  (A.m00 * A1223 - A.m01 * A0223 + A.m02 * A0123),
+     det * -(A.m00 * A1213 - A.m01 * A0213 + A.m02 * A0113),
+     det *  (A.m00 * A1212 - A.m01 * A0212 + A.m02 * A0112)
+  };
+}
+
 //CREDIT: https://www.ronja-tutorials.com/post/047-invlerp_remap/#inverse-lerp
 float invLerp(float a, float b, float value) {
   return (value - a) / (b - a);
@@ -504,7 +577,7 @@ vec4 refract(vec4 r, vec4 n, float IR) {
 
 // returns 1/sqrt(x)
 float rsqrt(float x) {
-  return 1.0 / sqrtf(x);
+  return g_pow(x, -0.5f);
 }
 
 // return sign of x (-1 or 1)

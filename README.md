@@ -136,6 +136,11 @@ returns the fractional part of x
 `x`: float  
 `return`: float
 
+**inverse(M)**  
+returns the inverse of a matrix M  
+`M`: mat2x2, mat3x3, mat4x4  
+`return`: same type as `M`
+
 **invLerp(a, b, value)**  
 returns a value t, given two points a and b, and a value (inverse of lerp)  
 `a`: float  

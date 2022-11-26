@@ -467,6 +467,10 @@ float g_fmod(float a, float b);
 // returns the fractional part of x
 float frac(float x);
 
+mat2x2 inverse(mat2x2 A);
+mat3x3 inverse(mat3x3 A);
+mat4x4 inverse(mat4x4 A);
+
 float invLerp(float a, float b, float value);
 
 // return length of vector
