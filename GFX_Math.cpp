@@ -523,18 +523,18 @@ vec4 mul(mat4x4 m, vec4 v) {
 // CREDIT: https://developer.download.nvidia.com/cg/normalize.html
 // return normalized vector (length of 1)
 vec2 normalize(vec2 v) {
-  return rsqrt(dot(v,v)) * v;
+  return rsqrt(dot(v, v)) * v;
 }
 vec3 normalize(vec3 v) {
-  return rsqrt(dot(v,v)) * v;
+  return rsqrt(dot(v, v)) * v;
 }
 vec4 normalize(vec4 v) {
-  return rsqrt(dot(v,v)) * v;
+  return rsqrt(dot(v, v)) * v;
 }
 
 // return x^y - uses built-in method
 float g_pow(float x, float y) {
-  return fasterpow(x, y);
+  return fastpow(x, y);
 }
 
 // convert degrees to radians
@@ -575,9 +575,22 @@ vec4 refract(vec4 r, vec4 n, float IR) {
   return t * vec4{(cost2 > 0 ? 1.0f : 0), (cost2 > 0 ? 1.0f : 0), (cost2 > 0 ? 1.0f : 0), (cost2 > 0 ? 1.0f : 0)};
 }
 
+// CREDIT: Quake III - https://en.wikipedia.org/wiki/Fast_inverse_square_root
 // returns 1/sqrt(x)
-float rsqrt(float x) {
-  return g_pow(x, -0.5f);
+float rsqrt(float number) {
+	long i;
+	float x2, y;
+	const float threehalfs = 1.5F;
+
+	x2 = number * 0.5F;
+	y  = number;
+	i  = * ( long * ) &y;                       // evil floating point bit level hacking
+	i  = 0x5f3759df - ( i >> 1 );               // what the fuck? 
+	y  = * ( float * ) &i;
+	y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
+  //	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+
+	return y;
 }
 
 // return sign of x (-1 or 1)
