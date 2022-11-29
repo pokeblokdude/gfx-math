@@ -72,7 +72,6 @@ struct vec2 {
   // f/v mult
   friend vec2 operator*(const float& lhs, vec2 rhs) {
     rhs *= lhs;
-    rhs *= lhs;
     return rhs;
   }
   // override negation
@@ -129,7 +128,6 @@ struct vec2i {
   }
   // f/v mult
   friend vec2i operator*(const int& lhs, vec2i rhs) {
-    rhs *= lhs;
     rhs *= lhs;
     return rhs;
   }
@@ -188,7 +186,6 @@ struct vec3 {
   }
   friend vec3 operator*(const float& lhs, vec3 rhs) {
     rhs *= lhs;
-    rhs *= lhs;
     return rhs;
   }
   vec3& operator-() const {
@@ -245,7 +242,6 @@ struct vec3i {
     return lhs;
   }
   friend vec3i operator*(const int& lhs, vec3i rhs) {
-    rhs *= lhs;
     rhs *= lhs;
     return rhs;
   }
@@ -309,7 +305,6 @@ struct vec4i {
   }
   friend vec4i operator*(const int& lhs, vec4i rhs) {
     rhs *= lhs;
-    rhs *= lhs;
     return rhs;
   }
   vec4i& operator-() const {
@@ -372,7 +367,6 @@ struct vec4 {
     return lhs;
   }
   friend vec4 operator*(const float& lhs, vec4 rhs) {
-    rhs *= lhs;
     rhs *= lhs;
     return rhs;
   }
