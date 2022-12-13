@@ -417,6 +417,7 @@ bool all(mat4x4 m);
 float g_atan2(float y, float x);
 
 // clamp value between min and max
+int clamp(int x, int min, int max);
 float clamp(float x, float min, float max);
 
 // clamp component-wise between 0 and 1
@@ -539,6 +540,7 @@ vec4 refract(vec4 r, vec4 n, float IR);
 float rsqrt(float x);
 
 // return sign of x (-1 or 1)
+int sign(int x);
 float sign(float x);
 
 // sine of x

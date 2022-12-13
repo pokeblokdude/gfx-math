@@ -86,6 +86,17 @@ float g_atan2(float y, float x) {
 }
 
 // clamp value between min and max
+int clamp(int x, int min, int max) {
+  if(x > max) {
+    return max;
+  }
+  else if(x < min) {
+    return min;
+  }
+  else {
+    return x;
+  }
+}
 float clamp(float x, float min, float max) {
   if(x > max) {
     return max;
@@ -594,6 +605,9 @@ float rsqrt(float number) {
 }
 
 // return sign of x (-1 or 1)
+int sign(int x) {
+  return x < 0 ? -1 : 1;
+}
 float sign(float x) {
   return x < 0 ? -1 : 1;
 }
