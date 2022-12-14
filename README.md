@@ -1,5 +1,7 @@
 # GFX Math
-This is a simple math library that implements common graphics functions. I made it for use with Arduino microcontrollers, but I'm sure it could be mildly useful in general programming as well. The initial list of functions was taken from HLSL documentation.
+This is a simple math library that implements common graphics functions. I made it for use with the Arduino Nano 33 BLE Sense microcontroller, but I'm sure it could be mildly useful in general programming as well. The initial list of functions was taken from HLSL documentation.
+
+Some of the approximation functions are taken from Paul Mineiro's `fastapprox` library (https://github.com/romeric/fastapprox). Others are from various internet sources and are documented in the code.
 
 The main reason I'm documenting this so well is for me to look at lol (also it was just fun to make).
 
